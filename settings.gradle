@@ -1,0 +1,2 @@
+include ':app', ':policylib'
+rootProject.name='PolicyLibDemo'

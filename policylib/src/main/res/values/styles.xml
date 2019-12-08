@@ -1,0 +1,13 @@
+<resources>
+
+    <style name="POLICY_DIALOG" parent="android:style/Theme.Dialog">
+        <item name="android:windowBackground">@drawable/btn_rule</item>
+        <item name="android:windowFrame">@null</item>
+        <!-- 无边框 -->
+        <item name="android:windowNoTitle">true</item>
+        <!-- 没有标题 -->
+        <item name="android:windowIsTranslucent">true</item>
+        <!-- 背景是否半透明 -->
+    </style>
+
+</resources>
