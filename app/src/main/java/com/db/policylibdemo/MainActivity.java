@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity implements Policy.PolicyClic
 
     private void initRule() {
         //展示用户协议和隐私政策
-        Policy.showRuleDialog(this, "用户协议和隐私政策概要", "请阅读《用户协议》和《隐私政策》", R.color.link, this);
+        Policy.getInstance().showRuleDialog(this, "用户协议和隐私政策概要", "请阅读《用户协议》和《隐私政策》", R.color.link, this);
     }
 
     @Override
@@ -87,7 +87,7 @@ public class MainActivity extends AppCompatActivity implements Policy.PolicyClic
         btn_request_in.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Policy.showPermissionDesSuitDialog(MainActivity.this, policyList, false, new Policy.RequestTipsPermission() {
+                Policy.getInstance().showPermissionDesSuitDialog(MainActivity.this, policyList, false, new Policy.RequestTipsPermission() {
                     @Override
                     public void hasRequest() {
                         initView();
@@ -99,7 +99,7 @@ public class MainActivity extends AppCompatActivity implements Policy.PolicyClic
         btn_request_before.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Policy.showPermissionDesSuitDialog(MainActivity.this, policyList, true, new Policy.RequestTipsPermission() {
+                Policy.getInstance().showPermissionDesSuitDialog(MainActivity.this, policyList, true, new Policy.RequestTipsPermission() {
                     @Override
                     public void hasRequest() {
                         initView();
@@ -127,11 +127,11 @@ public class MainActivity extends AppCompatActivity implements Policy.PolicyClic
         permissionPolicy1.setRequest(false);
         list.add(permissionPolicy);
         list.add(permissionPolicy1);
-        Policy.showPermissionDesDialog(this, list, true, this);
+        Policy.getInstance().showPermissionDesDialog(this, list, true, this);
     }
 
     private void showAfterPolicyDialog() {
-        Policy.showPermissionDesDialog(this, policyList, false, new Policy.PolicyClick() {
+        Policy.getInstance().showPermissionDesDialog(this, policyList, false, new Policy.PolicyClick() {
             @Override
             public void policyClick() {
                 getAfterPermission();
@@ -161,7 +161,7 @@ public class MainActivity extends AppCompatActivity implements Policy.PolicyClic
 
             @Override
             public void noPermision(ArrayList<String> permission) {
-                Policy.getRequestPermission(permission, policyList, new Policy.RequestPermission() {
+                Policy.getInstance().getRequestPermission(permission, policyList, new Policy.RequestPermission() {
                     @Override
                     public void request(boolean showRequest) {
                         if (showRequest) {
@@ -201,7 +201,7 @@ public class MainActivity extends AppCompatActivity implements Policy.PolicyClic
     @Override
     public void noPermision(ArrayList<String> permission) {
         showToast("无权限");
-        Policy.getRequestPermission(permission, list, new Policy.RequestPermission() {
+        Policy.getInstance().getRequestPermission(permission, list, new Policy.RequestPermission() {
             @Override
             public void request(boolean showRequest) {
                 if (showRequest) {

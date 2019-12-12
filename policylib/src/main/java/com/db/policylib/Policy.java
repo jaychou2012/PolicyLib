@@ -24,8 +24,24 @@ import java.util.List;
 
 public class Policy {
 
-    public static void showPermissionDesDialog(Context context, List<PermissionPolicy> list, boolean before,
-                                               final PolicyClick policyClick) {
+    private static volatile Policy instance = null;
+
+    private Policy() {
+    }
+
+    public static Policy getInstance() {
+        if (instance == null) {
+            synchronized (Policy.class) {
+                if (instance == null) {
+                    instance = new Policy();
+                }
+            }
+        }
+        return instance;
+    }
+
+    public void showPermissionDesDialog(Context context, List<PermissionPolicy> list, boolean before,
+                                        final PolicyClick policyClick) {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
             if (policyClick != null) {
                 policyClick.policyClick();
@@ -75,12 +91,12 @@ public class Policy {
         void policyClick();
     }
 
-    public static boolean hasPermission(Context context, String permission) {
+    public boolean hasPermission(Context context, String permission) {
         return ContextCompat.checkSelfPermission(context, permission) ==
                 PackageManager.PERMISSION_GRANTED;
     }
 
-    public static void getRequestPermission(ArrayList<String> permissions, List<PermissionPolicy> list, RequestPermission requestPermission) {
+    public void getRequestPermission(ArrayList<String> permissions, List<PermissionPolicy> list, RequestPermission requestPermission) {
         int k = 0;
         if (permissions != null && list != null && permissions.size() > 0) {
             for (int i = 0; i < permissions.size(); i++) {
@@ -103,8 +119,8 @@ public class Policy {
         void request(boolean showRequest);
     }
 
-    public static void showPermissionDesSuitDialog(final Context context, final List<PermissionPolicy> list, boolean before,
-                                                   final RequestTipsPermission requestTipsPermission) {
+    public void showPermissionDesSuitDialog(final Context context, final List<PermissionPolicy> list, boolean before,
+                                            final RequestTipsPermission requestTipsPermission) {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
             if (requestTipsPermission != null) {
                 requestTipsPermission.hasRequest();
@@ -150,7 +166,7 @@ public class Policy {
         });
     }
 
-    static class PermissionListener implements PermissionSuit.PermissionListener {
+    class PermissionListener implements PermissionSuit.PermissionListener {
         List<PermissionPolicy> list;
         RequestTipsPermission requestTipsPermission;
         Context context;
@@ -181,7 +197,7 @@ public class Policy {
                 @Override
                 public void request(boolean showRequest) {
                     if (showRequest) {
-                        showPermissionDesSuitDialog(context, list, true, null);
+                        showPermissionDesSuitDialog(context, list, true, requestTipsPermission);
                     } else {
                         if (requestTipsPermission != null) {
                             requestTipsPermission.hasRequest();
@@ -196,7 +212,7 @@ public class Policy {
         void hasRequest();
     }
 
-    public static void showRuleDialog(final Context context, String title, String text, int tagColor, final RuleListener ruleListener) {
+    public void showRuleDialog(final Context context, String title, String text, int tagColor, final RuleListener ruleListener) {
         if (hasShowRule(context)) {
             return;
         }
@@ -235,21 +251,23 @@ public class Policy {
         tv_text.setMovementMethod(LinkMovementMethod.getInstance());
         tv_text.setText(style);
 
-        ClickableSpan clickableSpanTwo = new ClickableSpan() {
-            @Override
-            public void onClick(View widget) {
-                if (ruleListener != null) {
-                    ruleListener.twoClick();
+        if (thirdIndex != -1) {
+            ClickableSpan clickableSpanTwo = new ClickableSpan() {
+                @Override
+                public void onClick(View widget) {
+                    if (ruleListener != null) {
+                        ruleListener.twoClick();
+                    }
                 }
-            }
-        };
-        style.setSpan(clickableSpanTwo, thirdIndex, text.lastIndexOf(tag2) + 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-        tv_text.setText(style);
+            };
+            style.setSpan(clickableSpanTwo, thirdIndex, text.lastIndexOf(tag2) + 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            tv_text.setText(style);
 
-        ForegroundColorSpan foregroundColorSpanTwo = new ForegroundColorSpan(context.getResources().getColor(tagColor));
-        style.setSpan(foregroundColorSpanTwo, thirdIndex, text.lastIndexOf(tag2) + 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-        tv_text.setMovementMethod(LinkMovementMethod.getInstance());
-        tv_text.setText(style);
+            ForegroundColorSpan foregroundColorSpanTwo = new ForegroundColorSpan(context.getResources().getColor(tagColor));
+            style.setSpan(foregroundColorSpanTwo, thirdIndex, text.lastIndexOf(tag2) + 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            tv_text.setMovementMethod(LinkMovementMethod.getInstance());
+            tv_text.setText(style);
+        }
 
         tv_ok.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -280,17 +298,17 @@ public class Policy {
         void twoClick();
     }
 
-    public static boolean hasShowRule(Context context) {
+    public boolean hasShowRule(Context context) {
         SharedPreferences sharedPreferences = context.getSharedPreferences("rule", Context.MODE_PRIVATE);
         return sharedPreferences.getBoolean("rule", false);
     }
 
-    public static void putShowRule(Context context) {
+    public void putShowRule(Context context) {
         SharedPreferences sharedPreferences = context.getSharedPreferences("rule", Context.MODE_PRIVATE);
         sharedPreferences.edit().putBoolean("rule", true).commit();
     }
 
-    public static void clearShowRule(Context context) {
+    public void clearShowRule(Context context) {
         SharedPreferences sharedPreferences = context.getSharedPreferences("rule", Context.MODE_PRIVATE);
         sharedPreferences.edit().putBoolean("rule", false).commit();
     }
