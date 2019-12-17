@@ -1,6 +1,8 @@
 package com.db.policylib;
 
-public class PermissionPolicy {
+import java.io.Serializable;
+
+public class PermissionPolicy implements Serializable {
     private int id;
     private String permission;
     private int icon;

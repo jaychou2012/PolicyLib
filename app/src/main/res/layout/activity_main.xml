@@ -3,8 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:gravity="center"
+    android:orientation="vertical"
     tools:context=".MainActivity">
 
     <TextView
@@ -13,23 +13,5 @@
         android:layout_height="wrap_content"
         android:padding="10dp"
         android:text="Hello World!" />
-
-    <Button
-        android:id="@+id/btn_request"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="拒绝后弹出提示" />
-
-    <Button
-        android:id="@+id/btn_request_in"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="拒绝后弹出提示(用内置权限申请方法)" />
-
-    <Button
-        android:id="@+id/btn_request_before"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="先弹出提示(用内置权限申请方法)" />
 
 </LinearLayout>

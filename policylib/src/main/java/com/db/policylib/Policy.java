@@ -3,9 +3,14 @@ package com.db.policylib;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Build;
+import android.provider.Settings;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -15,12 +20,15 @@ import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
 import android.text.style.ForegroundColorSpan;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.db.policylib.permission.PermissionSuit;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import pub.devrel.easypermissions.AppSettingsDialog;
 
 public class Policy {
 
@@ -44,7 +52,7 @@ public class Policy {
                                         final PolicyClick policyClick) {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
             if (policyClick != null) {
-                policyClick.policyClick();
+                policyClick.policyCancelClick();
             }
             return;
         }
@@ -56,13 +64,13 @@ public class Policy {
         }
         if (listRequest.size() == 0) {
             if (policyClick != null) {
-                policyClick.policyClick();
+                policyClick.policyCancelClick();
             }
             return;
         }
         if (!before) {
             if (policyClick != null) {
-                policyClick.policyClick();
+                policyClick.policyCancelClick();
             }
             return;
         }
@@ -81,14 +89,14 @@ public class Policy {
             public void onClick(View v) {
                 dialog.dismiss();
                 if (policyClick != null) {
-                    policyClick.policyClick();
+                    policyClick.policyCancelClick();
                 }
             }
         });
     }
 
     public interface PolicyClick {
-        void policyClick();
+        void policyCancelClick();
     }
 
     public boolean hasPermission(Context context, String permission) {
@@ -117,6 +125,78 @@ public class Policy {
 
     public interface RequestPermission {
         void request(boolean showRequest);
+    }
+
+    public void showSettingDesDialog(final Context context, List<PermissionPolicy> list,
+                                     final PolicyClick policyClick) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+            if (policyClick != null) {
+                policyClick.policyCancelClick();
+            }
+            return;
+        }
+        boolean request = false;
+        for (int i = 0; i < list.size(); i++) {
+            if (hasPermission(context, list.get(i).getPermission())) {
+                list.remove(i);
+            } else {
+                if (list.get(i).isRequest()) {
+                    request = true;
+                }
+            }
+        }
+        final Dialog dialog = new Dialog(context, R.style.POLICY_DIALOG);
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.setCancelable(false);
+        dialog.setContentView(R.layout.layout_policy);
+        dialog.show();
+        RecyclerView rv_list = dialog.findViewById(R.id.rv_list);
+        TextView tv_ok = dialog.findViewById(R.id.tv_ok);
+        TextView tv_cancel = dialog.findViewById(R.id.tv_cancel);
+        LinearLayout ll_bottom = dialog.findViewById(R.id.ll_bottom);
+        TextView tv_request = dialog.findViewById(R.id.tv_request);
+        TextView tv_title = dialog.findViewById(R.id.tv_title);
+        TextView tv_tips = dialog.findViewById(R.id.tv_tips);
+        if (request) {
+            ll_bottom.setVisibility(View.GONE);
+            tv_request.setVisibility(View.VISIBLE);
+        } else {
+            ll_bottom.setVisibility(View.VISIBLE);
+            tv_request.setVisibility(View.GONE);
+        }
+        tv_title.setText("应用选择了不再提示，请手动授权");
+        tv_tips.setVisibility(View.VISIBLE);
+        tv_tips.setText("您已经选择了不再提示，请去应用详情设置->权限里手动授权。");
+        PolicyAdapter adapter = new PolicyAdapter(context, list);
+        rv_list.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false));
+        rv_list.setAdapter(adapter);
+        tv_ok.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+                        .setData(Uri.fromParts("package", context.getPackageName(), null));
+                ((Activity) context).startActivityForResult(intent, AppSettingsDialog.DEFAULT_SETTINGS_REQ_CODE);
+            }
+        });
+        tv_request.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+                        .setData(Uri.fromParts("package", context.getPackageName(), null));
+                ((Activity) context).startActivityForResult(intent, AppSettingsDialog.DEFAULT_SETTINGS_REQ_CODE);
+            }
+        });
+        tv_cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                if (policyClick != null) {
+                    policyClick.policyCancelClick();
+                }
+            }
+        });
     }
 
     public void showPermissionDesSuitDialog(final Context context, final List<PermissionPolicy> list, boolean before,
@@ -214,6 +294,9 @@ public class Policy {
 
     public void showRuleDialog(final Context context, String title, String text, int tagColor, final RuleListener ruleListener) {
         if (hasShowRule(context)) {
+            if (ruleListener != null) {
+                ruleListener.rule(true);
+            }
             return;
         }
         final Dialog dialog = new Dialog(context, R.style.POLICY_DIALOG);
@@ -298,6 +381,21 @@ public class Policy {
         void twoClick();
     }
 
+    public boolean hasRefusedPermission(Context mContexts, String permission) {
+        return ActivityCompat.shouldShowRequestPermissionRationale((Activity) mContexts, permission);
+    }
+
+    public boolean getRefusedList(Context context, ArrayList<String> list) {
+        for (int i = 0; i < list.size(); i++) {
+            String permissionItem = list.get(i);
+            if (!hasPermission(context, permissionItem) &&
+                    hasRefusedPermission(context, permissionItem)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public boolean hasShowRule(Context context) {
         SharedPreferences sharedPreferences = context.getSharedPreferences("rule", Context.MODE_PRIVATE);
         return sharedPreferences.getBoolean("rule", false);
@@ -311,5 +409,24 @@ public class Policy {
     public void clearShowRule(Context context) {
         SharedPreferences sharedPreferences = context.getSharedPreferences("rule", Context.MODE_PRIVATE);
         sharedPreferences.edit().putBoolean("rule", false).commit();
+    }
+
+    public void putString(Context context, String permission) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences("rule", Context.MODE_PRIVATE);
+        sharedPreferences.edit().putBoolean(permission, true).commit();
+    }
+
+    public boolean getString(Context context, String permission) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences("rule", Context.MODE_PRIVATE);
+        return sharedPreferences.getBoolean(permission, false);
+    }
+
+    public boolean getStringList(Context context, @NonNull String... perms) {
+        for (int i = 0; i < perms.length; i++) {
+            if (!getString(context, perms[i])) {
+                return false;
+            }
+        }
+        return true;
     }
 }

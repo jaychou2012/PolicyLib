@@ -6,4 +6,5 @@
     <color name="line">#D9D9D9</color>
     <color name="btn_press">#cccccc</color>
     <color name="link">#3F51B5</color>
+    <color name="gray">#ff808080</color>
 </resources>

@@ -3,24 +3,29 @@ package com.db.policylibdemo;
 import android.Manifest;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.db.policylib.PermissionPolicy;
 import com.db.policylib.Policy;
-import com.db.policylib.permission.PermissionSuit;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements Policy.PolicyClick, PermissionSuit.PermissionListener, Policy.RequestTipsPermission, Policy.RuleListener {
+import pub.devrel.easypermissions.AfterPermissionGranted;
+import pub.devrel.easypermissions.AppSettingsDialog;
+import pub.devrel.easypermissions.EasyPermissions;
+
+public class MainActivity extends AppCompatActivity implements Policy.RuleListener, EasyPermissions.PermissionCallbacks,
+        EasyPermissions.RationaleCallbacks, Policy.PolicyClick {
     private TextView tv_text;
-    private Button btn_request, btn_request_in, btn_request_before;
     private List<PermissionPolicy> list;
-    private List<PermissionPolicy> policyList;
+    private static final String[] STORAGE_AND_PHONE =
+            {Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_PHONE_STATE};
+    private static final int RC_STORAGE_PHONE_PERM = 125;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +42,6 @@ public class MainActivity extends AppCompatActivity implements Policy.PolicyClic
     @Override
     public void rule(boolean agree) {
         if (agree) {
-            //请求权限（先弹窗提示，后申请权限）
             showBeforePolicyDialog();
         } else {
             MainActivity.this.finish();
@@ -61,55 +65,10 @@ public class MainActivity extends AppCompatActivity implements Policy.PolicyClic
     }
 
     private void initView() {
-        System.out.println("已经初始化");
         tv_text = findViewById(R.id.tv_text);
-        btn_request = findViewById(R.id.btn_request);
-        btn_request_in = findViewById(R.id.btn_request_in);
-        btn_request_before = findViewById(R.id.btn_request_before);
         tv_text.setText("必要权限已经可以使用");
-
-        policyList = new ArrayList<>();
-        PermissionPolicy permissionPolicy = new PermissionPolicy();
-        permissionPolicy.setPermission(Manifest.permission.RECORD_AUDIO);
-        permissionPolicy.setTitle("录音权限");
-        permissionPolicy.setDes("用于语音识别和音频录制。");
-        permissionPolicy.setIcon(R.mipmap.icon_record_audio);
-        permissionPolicy.setRequest(true);
-        policyList.add(permissionPolicy);
-        // 使用自定义的权限申请框架的方法，先申请权限，拒绝后弹窗提示
-        btn_request.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getAfterPermission();
-            }
-        });
-        // 使用内置的权限申请方法，先申请权限，拒绝后弹窗提示
-        btn_request_in.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Policy.getInstance().showPermissionDesSuitDialog(MainActivity.this, policyList, false, new Policy.RequestTipsPermission() {
-                    @Override
-                    public void hasRequest() {
-                        initView();
-                    }
-                });
-            }
-        });
-        // 使用内置的权限申请方法，先弹窗提示，然后申请权限
-        btn_request_before.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Policy.getInstance().showPermissionDesSuitDialog(MainActivity.this, policyList, true, new Policy.RequestTipsPermission() {
-                    @Override
-                    public void hasRequest() {
-                        initView();
-                    }
-                });
-            }
-        });
     }
 
-    // 使用自定义的权限申请框架的方法，先弹窗提示，然后申请权限
     private void showBeforePolicyDialog() {
         list = new ArrayList<>();
         PermissionPolicy permissionPolicy = new PermissionPolicy();
@@ -125,97 +84,77 @@ public class MainActivity extends AppCompatActivity implements Policy.PolicyClic
         permissionPolicy1.setDes("校验IMEI&IMSI码，防止账号被盗。");
         permissionPolicy1.setIcon(R.mipmap.icon_tel);
         permissionPolicy1.setRequest(false);
-        list.add(permissionPolicy);
-        list.add(permissionPolicy1);
-        Policy.getInstance().showPermissionDesDialog(this, list, true, this);
+        if (!Policy.getInstance().hasPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+            list.add(permissionPolicy);
+        }
+        if (!Policy.getInstance().hasPermission(this, Manifest.permission.READ_PHONE_STATE)) {
+            list.add(permissionPolicy1);
+        }
+        if (list.size() == 0) {
+            initView();
+            return;
+        }
+        getPermission();
     }
 
-    private void showAfterPolicyDialog() {
-        Policy.getInstance().showPermissionDesDialog(this, policyList, false, new Policy.PolicyClick() {
-            @Override
-            public void policyClick() {
-                getAfterPermission();
-            }
-        });
-    }
-
-    private void getAfterPermission() {
-        policyList = new ArrayList<>();
-        PermissionPolicy permissionPolicy = new PermissionPolicy();
-        permissionPolicy.setPermission(Manifest.permission.RECORD_AUDIO);
-        permissionPolicy.setTitle("录音权限");
-        permissionPolicy.setDes("用于语音识别和音频录制。");
-        permissionPolicy.setIcon(R.mipmap.icon_record_audio);
-        permissionPolicy.setRequest(true);
-        policyList.add(permissionPolicy);
-        PermissionSuit.with(MainActivity.this).setPermissions(Manifest.permission.RECORD_AUDIO).excute(new PermissionSuit.PermissionListener() {
-            @Override
-            public void getPermission(ArrayList<String> permission) {
-
-            }
-
-            @Override
-            public void getAllPermission(ArrayList<String> permission) {
-
-            }
-
-            @Override
-            public void noPermision(ArrayList<String> permission) {
-                Policy.getInstance().getRequestPermission(permission, policyList, new Policy.RequestPermission() {
-                    @Override
-                    public void request(boolean showRequest) {
-                        if (showRequest) {
-                            showAfterPolicyDialog();
-                        } else {
-                            initView();
-                        }
-                    }
-                });
-            }
-        });
-    }
-
-    //必要权限通过后回调的方法，这里可以正常初始化布局和数据了
-    @Override
-    public void hasRequest() {
-        initView();
+    @AfterPermissionGranted(RC_STORAGE_PHONE_PERM)
+    public void getPermission() {
+        if (EasyPermissions.hasPermissions(this, STORAGE_AND_PHONE)) {
+            initView();
+        } else {
+            EasyPermissions.requestPermissions(
+                    MainActivity.this, "权限",
+                    RC_STORAGE_PHONE_PERM, list,
+                    STORAGE_AND_PHONE);
+        }
     }
 
     @Override
-    public void policyClick() {
-        PermissionSuit.with(this).setPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_PHONE_STATE).excute(this);
+    public void onRequestPermissionsResult(int requestCode,
+                                           @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
     }
 
     @Override
-    public void getPermission(ArrayList<String> permission) {
-        showToast("有部分权限");
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == AppSettingsDialog.DEFAULT_SETTINGS_REQ_CODE) {
+            getPermission();
+        }
     }
 
     @Override
-    public void getAllPermission(ArrayList<String> permission) {
-        //必要权限通过后回调的方法，这里可以正常初始化布局和数据了
-        showToast("有权限");
-        initView();
+    public void onPermissionsGranted(int requestCode, @NonNull List<String> perms) {
+
     }
 
     @Override
-    public void noPermision(ArrayList<String> permission) {
-        showToast("无权限");
-        Policy.getInstance().getRequestPermission(permission, list, new Policy.RequestPermission() {
-            @Override
-            public void request(boolean showRequest) {
-                if (showRequest) {
-                    showBeforePolicyDialog();
-                } else {
-                    //必要权限通过后回调的方法，这里可以正常初始化布局和数据了
-                    initView();
-                }
-            }
-        });
+    public void onPermissionsDenied(int requestCode, @NonNull List<String> perms) {
+        if (EasyPermissions.somePermissionPermanentlyDenied(this, perms)) {
+            new AppSettingsDialog.Builder(this).build().show(list,this);
+        } else {
+            getPermission();
+        }
+    }
+
+    @Override
+    public void onRationaleAccepted(int requestCode) {
+
+    }
+
+    @Override
+    public void onRationaleDenied(int requestCode) {
+        showToast("必要的权限被禁止，无法正常使用");
     }
 
     private void showToast(String text) {
         Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
     }
 
+    @Override
+    public void policyCancelClick() {
+
+    }
 }
