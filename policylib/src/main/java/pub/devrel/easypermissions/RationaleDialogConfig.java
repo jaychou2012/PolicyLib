@@ -8,6 +8,7 @@ import android.support.annotation.StyleRes;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.db.policylib.PermissionPolicy;
@@ -82,17 +83,40 @@ class RationaleDialogConfig {
         dialog.setCancelable(false);
         dialog.setContentView(R.layout.layout_policy);
         dialog.show();
+        LinearLayout ll_bottom = dialog.findViewById(R.id.ll_bottom);
         RecyclerView rv_list = dialog.findViewById(R.id.rv_list);
         TextView tv_request = dialog.findViewById(R.id.tv_request);
+        TextView tv_ok = dialog.findViewById(R.id.tv_ok);
+        TextView tv_cancel = dialog.findViewById(R.id.tv_cancel);
+        ll_bottom.setVisibility(View.VISIBLE);
+        tv_request.setVisibility(View.GONE);
         PolicyAdapter adapter = new PolicyAdapter(context, lists);
         rv_list.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false));
         rv_list.setAdapter(adapter);
+        tv_ok.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                if (listener != null) {
+                    listener.onClick(0);
+                }
+            }
+        });
         tv_request.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 dialog.dismiss();
                 if (listener != null) {
                     listener.onClick(0);
+                }
+            }
+        });
+        tv_cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                if (listener != null) {
+                    listener.onClick(1);
                 }
             }
         });
@@ -105,8 +129,13 @@ class RationaleDialogConfig {
         dialog.setCancelable(false);
         dialog.setContentView(R.layout.layout_policy);
         dialog.show();
+        LinearLayout ll_bottom = dialog.findViewById(R.id.ll_bottom);
         RecyclerView rv_list = dialog.findViewById(R.id.rv_list);
         TextView tv_request = dialog.findViewById(R.id.tv_request);
+        TextView tv_ok = dialog.findViewById(R.id.tv_ok);
+        TextView tv_cancel = dialog.findViewById(R.id.tv_cancel);
+        ll_bottom.setVisibility(View.VISIBLE);
+        tv_request.setVisibility(View.GONE);
         PolicyAdapter adapter = new PolicyAdapter(context, lists);
         rv_list.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false));
         rv_list.setAdapter(adapter);
@@ -116,6 +145,24 @@ class RationaleDialogConfig {
                 dialog.dismiss();
                 if (listener != null) {
                     listener.onClick(0);
+                }
+            }
+        });
+        tv_request.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                if (listener != null) {
+                    listener.onClick(0);
+                }
+            }
+        });
+        tv_cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                if (listener != null) {
+                    listener.onClick(1);
                 }
             }
         });

@@ -59,7 +59,7 @@ public class RationaleClickListener {
             if (mRationaleCallbacks != null) {
                 mRationaleCallbacks.onRationaleDenied(requestCode);
             }
-            notifyPermissionDenied();
+//            notifyPermissionDenied();
         }
     }
 
