@@ -8,6 +8,23 @@ PolicyLibDemo
 支持申请权限时，用户点击拒绝并不再提示后再弹窗提示去系统手动授权；
 内置权限申请方法EasyPermission。
 
+引用库方法：
+```
+allprojects {
+		repositories {
+			...
+			maven { url 'https://www.jitpack.io' }
+		}
+	}
+```
+```
+dependencies {
+	        implementation 'com.github.jaychou2012:PolicyLibDemo:1.0.1'
+	}
+```  
+
+具体用例可以在MainActivity里查看用法。支持Activity和Fragment。
+
 体验APK：
 [点击下载](https://github.com/jaychou2012/PolicyLibDemo/blob/master/app-debug.apk?raw=true)
 
