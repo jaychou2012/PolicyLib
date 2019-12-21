@@ -26,6 +26,12 @@ public class MainActivity extends AppCompatActivity implements Policy.RuleListen
     private static final String[] STORAGE_AND_PHONE =
             {Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_PHONE_STATE};
     private static final int RC_STORAGE_PHONE_PERM = 125;
+    private String text = "欢迎使用XX应用！我们将通过XXXXXX《用户协议》和《隐私政策》帮助您了解我们收集、使用、存储和共享个人信息的情况，以及您所享有的相关权利。\n\n" +
+            "• 为了向您提供XX音频文件生成存储、语音转文字、头像上传、用户注册等功能服务，我们需要使用您的一些存储权限、音视频录制权限、相机权限、获取设备信息等权限及信息。\n" +
+            "• 您可以在个人中心修改、更正您的信息，也可以自己注销账户。\n" +
+            "• 我们会采用业界领先的安全技术保护好您的个人信息。\n\n" +
+            "您可以通过阅读完整版用户隐私政策，了解个人信息类型与用途的对应关系等更加详尽的个人信息处理规则。\n" +
+            "如您同意，请点击“同意”开始接受我们的服务。";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +42,7 @@ public class MainActivity extends AppCompatActivity implements Policy.RuleListen
 
     private void initRule() {
         //展示用户协议和隐私政策
-        Policy.getInstance().showRuleDialog(this, "用户协议和隐私政策概要", "请阅读《用户协议》和《隐私政策》", R.color.link, this);
+        Policy.getInstance().showRuleDialog(this, "用户协议和隐私政策概要", text, R.color.link, this);
     }
 
     @Override
@@ -133,7 +139,7 @@ public class MainActivity extends AppCompatActivity implements Policy.RuleListen
     @Override
     public void onPermissionsDenied(int requestCode, @NonNull List<String> perms) {
         if (EasyPermissions.somePermissionPermanentlyDenied(this, perms)) {
-            new AppSettingsDialog.Builder(this).build().show(list,this);
+            new AppSettingsDialog.Builder(this).build().show(list, this);
         } else {
             getPermission();
         }

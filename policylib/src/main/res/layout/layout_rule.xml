@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="match_parent">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -16,7 +16,7 @@
             android:padding="10dp"
             android:text="用户协议和隐私政策概要"
             android:textColor="#212121"
-            android:textSize="18sp" />
+            android:textSize="16sp" />
 
         <View
             android:layout_width="match_parent"
@@ -26,15 +26,16 @@
         <TextView
             android:id="@+id/tv_text"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:lineSpacingMultiplier="1.2"
+            android:layout_weight="1"
             android:paddingLeft="10dp"
             android:paddingTop="20dp"
             android:paddingRight="10dp"
             android:paddingBottom="20dp"
             android:text=""
             android:textColor="#56595e"
-            android:textSize="16sp" />
+            android:textSize="14sp" />
 
         <View
             android:layout_width="match_parent"

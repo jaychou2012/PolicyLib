@@ -9,10 +9,21 @@ android {
         versionCode 1
         versionName "1.0"
     }
+
+    signingConfigs {
+        release {
+            keyAlias 'zuichu'
+            keyPassword 'text2pic123321'
+            storeFile file('D:/F/text2voice/app/text2pic')
+            storePassword 'text2pic123321'
+        }
+    }
+
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
         }
     }
 }
