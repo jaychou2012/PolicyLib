@@ -139,7 +139,7 @@ class RationaleDialogConfig {
         PolicyAdapter adapter = new PolicyAdapter(context, lists);
         rv_list.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false));
         rv_list.setAdapter(adapter);
-        tv_request.setOnClickListener(new View.OnClickListener() {
+        tv_ok.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 dialog.dismiss();

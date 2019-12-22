@@ -49,7 +49,6 @@ class ActivityPermissionHelper extends PermissionHelper<Activity> {
                                                int requestCode, List<PermissionPolicy> list,
                                                @NonNull String... perms) {
         FragmentManager fm = getHost().getFragmentManager();
-        Toast.makeText(getContext(), "权限", Toast.LENGTH_SHORT).show();
         // Check if fragment is already showing
         Fragment fragment = fm.findFragmentByTag(RationaleDialogFragment.TAG);
         if (fragment instanceof RationaleDialogFragment) {
