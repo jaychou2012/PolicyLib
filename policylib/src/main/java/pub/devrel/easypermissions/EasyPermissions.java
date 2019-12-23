@@ -63,7 +63,7 @@ public class EasyPermissions {
     }
 
     private static final String TAG = "EasyPermissions";
-    private static Activity activity;
+    private static Context context;
 
     /**
      * Check if the calling context has a set of permissions.
@@ -113,7 +113,7 @@ public class EasyPermissions {
     public static void requestPermissions(
             @NonNull Activity host, @NonNull String rationale,
             int requestCode, List<PermissionPolicy> list, @Size(min = 1) @NonNull String... perms) {
-        activity = host;
+        context = (Context) host;
         for (int i = 0; i < list.size(); i++) {
             PermissionPolicy policy = list.get(i);
             if (Policy.getInstance().hasPermission(host, policy.getPermission())) {
@@ -135,6 +135,7 @@ public class EasyPermissions {
     public static void requestPermissions(
             @NonNull Fragment host, @NonNull String rationale,
             int requestCode, List<PermissionPolicy> list, @Size(min = 1) @NonNull String... perms) {
+        context = ((Fragment) host).getContext();
         requestPermissions(
                 new PermissionRequest.Builder(host, requestCode, list, perms)
                         .setRationale(rationale)
@@ -208,9 +209,8 @@ public class EasyPermissions {
             // Report denied permissions, if any.
             if (!denied.isEmpty()) {
                 if (object instanceof PermissionCallbacks) {
-                    System.out.println("拒绝权限列表：" + denied.toString());
                     for (int i = 0; i < denied.size(); i++) {
-                        Policy.getInstance().putString(activity, denied.get(i));
+                        Policy.getInstance().putString(context, denied.get(i));
                     }
                     ((PermissionCallbacks) object).onPermissionsDenied(requestCode, denied);
                 }

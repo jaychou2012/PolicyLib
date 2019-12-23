@@ -65,7 +65,7 @@ public abstract class PermissionHelper<T> {
                                    @StyleRes int theme,
                                    int requestCode, List<PermissionPolicy> list,
                                    @NonNull String... perms) {
-        if (shouldShowRationale(perms) || !Policy.getInstance().getStringList((Activity) mHost, perms)) {// !TextUtils.isEmpty(rationale)
+        if (shouldShowRationale(perms) || !Policy.getInstance().getStringList(getHostContext(), perms)) {// !TextUtils.isEmpty(rationale)
             showRequestPermissionRationale(
                     rationale, positiveButton, negativeButton, theme, requestCode, list, perms);
         } else {
@@ -94,6 +94,16 @@ public abstract class PermissionHelper<T> {
     @NonNull
     public T getHost() {
         return mHost;
+    }
+
+    public Context getHostContext() {
+        if (getHost() instanceof Activity) {
+            return (Context) getHost();
+        } else if (getHost() instanceof Fragment) {
+            return ((Fragment) getHost()).getContext();
+        } else {
+            throw new IllegalStateException("Unknown host: " + getHost());
+        }
     }
 
     // ============================================================================

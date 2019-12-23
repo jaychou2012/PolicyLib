@@ -20,7 +20,6 @@ import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
 import android.text.style.ForegroundColorSpan;
 import android.view.View;
-import android.view.Window;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -34,6 +33,8 @@ import pub.devrel.easypermissions.AppSettingsDialog;
 public class Policy {
 
     private static volatile Policy instance = null;
+    private String title = "应用需要下列权限才可以正常使用";
+    public static final String TITLE = "应用需要下列权限才可以正常使用";
 
     private Policy() {
     }
@@ -49,11 +50,19 @@ public class Policy {
         return instance;
     }
 
-    public void showPermissionDesDialog(Context context, List<PermissionPolicy> list, boolean before,
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void showPermissionDesDialog(Context context, int requestCode, List<PermissionPolicy> list, boolean before,
                                         final PolicyClick policyClick) {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
             if (policyClick != null) {
-                policyClick.policyCancelClick();
+                policyClick.policyCancelClick(requestCode);
             }
             return;
         }
@@ -65,13 +74,13 @@ public class Policy {
         }
         if (listRequest.size() == 0) {
             if (policyClick != null) {
-                policyClick.policyCancelClick();
+                policyClick.policyCancelClick(requestCode);
             }
             return;
         }
         if (!before) {
             if (policyClick != null) {
-                policyClick.policyCancelClick();
+                policyClick.policyCancelClick(requestCode);
             }
             return;
         }
@@ -90,14 +99,14 @@ public class Policy {
             public void onClick(View v) {
                 dialog.dismiss();
                 if (policyClick != null) {
-                    policyClick.policyCancelClick();
+                    policyClick.policyCancelClick(requestCode);
                 }
             }
         });
     }
 
     public interface PolicyClick {
-        void policyCancelClick();
+        void policyCancelClick(int reqeustCode);
     }
 
     public boolean hasPermission(Context context, String permission) {
@@ -128,23 +137,13 @@ public class Policy {
         void request(boolean showRequest);
     }
 
-    public void showSettingDesDialog(final Context context, List<PermissionPolicy> list,
+    public void showSettingDesDialog(final Context context, int requestCode, List<PermissionPolicy> list,
                                      final PolicyClick policyClick) {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
             if (policyClick != null) {
-                policyClick.policyCancelClick();
+                policyClick.policyCancelClick(requestCode);
             }
             return;
-        }
-        boolean request = false;
-        for (int i = 0; i < list.size(); i++) {
-            if (hasPermission(context, list.get(i).getPermission())) {
-                list.remove(i);
-            } else {
-                if (list.get(i).isRequest()) {
-                    request = true;
-                }
-            }
         }
         final Dialog dialog = new Dialog(context, R.style.POLICY_DIALOG);
         dialog.setCanceledOnTouchOutside(false);
@@ -158,13 +157,8 @@ public class Policy {
         TextView tv_request = dialog.findViewById(R.id.tv_request);
         TextView tv_title = dialog.findViewById(R.id.tv_title);
         TextView tv_tips = dialog.findViewById(R.id.tv_tips);
-        if (request) {
-            ll_bottom.setVisibility(View.GONE);
-            tv_request.setVisibility(View.VISIBLE);
-        } else {
-            ll_bottom.setVisibility(View.VISIBLE);
-            tv_request.setVisibility(View.GONE);
-        }
+        ll_bottom.setVisibility(View.VISIBLE);
+        tv_request.setVisibility(View.GONE);
         tv_title.setText("应用选择了不再提示，请手动授权");
         tv_tips.setVisibility(View.VISIBLE);
         tv_tips.setText("您已经选择了不再提示，请去应用详情设置->权限里手动授权。");
@@ -177,7 +171,8 @@ public class Policy {
                 dialog.dismiss();
                 Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
                         .setData(Uri.fromParts("package", context.getPackageName(), null));
-                ((Activity) context).startActivityForResult(intent, AppSettingsDialog.DEFAULT_SETTINGS_REQ_CODE);
+                ((Activity) context).startActivityForResult(intent, requestCode > 0 ? requestCode :
+                        AppSettingsDialog.DEFAULT_SETTINGS_REQ_CODE);
             }
         });
         tv_request.setOnClickListener(new View.OnClickListener() {
@@ -186,7 +181,8 @@ public class Policy {
                 dialog.dismiss();
                 Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
                         .setData(Uri.fromParts("package", context.getPackageName(), null));
-                ((Activity) context).startActivityForResult(intent, AppSettingsDialog.DEFAULT_SETTINGS_REQ_CODE);
+                ((Activity) context).startActivityForResult(intent, requestCode > 0 ? requestCode :
+                        AppSettingsDialog.DEFAULT_SETTINGS_REQ_CODE);
             }
         });
         tv_cancel.setOnClickListener(new View.OnClickListener() {
@@ -194,7 +190,7 @@ public class Policy {
             public void onClick(View v) {
                 dialog.dismiss();
                 if (policyClick != null) {
-                    policyClick.policyCancelClick();
+                    policyClick.policyCancelClick(requestCode);
                 }
             }
         });

@@ -12,6 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.db.policylib.PermissionPolicy;
+import com.db.policylib.Policy;
 import com.db.policylib.PolicyAdapter;
 import com.db.policylib.R;
 
@@ -85,11 +86,15 @@ class RationaleDialogConfig {
         dialog.show();
         LinearLayout ll_bottom = dialog.findViewById(R.id.ll_bottom);
         RecyclerView rv_list = dialog.findViewById(R.id.rv_list);
+        TextView tv_title = dialog.findViewById(R.id.tv_title);
         TextView tv_request = dialog.findViewById(R.id.tv_request);
         TextView tv_ok = dialog.findViewById(R.id.tv_ok);
         TextView tv_cancel = dialog.findViewById(R.id.tv_cancel);
         ll_bottom.setVisibility(View.VISIBLE);
         tv_request.setVisibility(View.GONE);
+        if (!Policy.getInstance().getTitle().equals(Policy.TITLE)) {
+            tv_title.setText(Policy.getInstance().getTitle());
+        }
         PolicyAdapter adapter = new PolicyAdapter(context, lists);
         rv_list.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false));
         rv_list.setAdapter(adapter);
@@ -131,11 +136,15 @@ class RationaleDialogConfig {
         dialog.show();
         LinearLayout ll_bottom = dialog.findViewById(R.id.ll_bottom);
         RecyclerView rv_list = dialog.findViewById(R.id.rv_list);
+        TextView tv_title = dialog.findViewById(R.id.tv_title);
         TextView tv_request = dialog.findViewById(R.id.tv_request);
         TextView tv_ok = dialog.findViewById(R.id.tv_ok);
         TextView tv_cancel = dialog.findViewById(R.id.tv_cancel);
         ll_bottom.setVisibility(View.VISIBLE);
         tv_request.setVisibility(View.GONE);
+        if (!Policy.getInstance().getTitle().equals(Policy.TITLE)) {
+            tv_title.setText(Policy.getInstance().getTitle());
+        }
         PolicyAdapter adapter = new PolicyAdapter(context, lists);
         rv_list.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false));
         rv_list.setAdapter(adapter);

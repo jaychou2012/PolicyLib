@@ -1,5 +1,6 @@
 package pub.devrel.easypermissions;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -119,17 +120,18 @@ public class AppSettingsDialog implements Parcelable, Policy.PolicyClick {
         startForResult(AppSettingsDialogHolderActivity.createShowDialogIntent(mContext, this));
     }
 
-    public void show(List<PermissionPolicy> list) {
-        Policy.getInstance().showSettingDesDialog(mContext, list, this);
+    public void show(int requestCode, List<PermissionPolicy> list) {
+        Policy.getInstance().showSettingDesDialog(mContext, requestCode, list, this);
     }
 
-    public void show(List<PermissionPolicy> list, Policy.PolicyClick policyClick) {
-        Policy.getInstance().showSettingDesDialog(mContext, list, policyClick);
+    public void show(int requestCode, List<PermissionPolicy> list, Policy.PolicyClick policyClick) {
+        Policy.getInstance().showSettingDesDialog(mContext, requestCode, list, policyClick);
     }
 
     /**
      * Show the dialog. {@link #show()} is a wrapper to ensure backwards compatibility
      */
+    @SuppressLint("ResourceType")
     AlertDialog showDialog(DialogInterface.OnClickListener positiveListener,
                            DialogInterface.OnClickListener negativeListener) {
         AlertDialog.Builder builder;
@@ -168,7 +170,7 @@ public class AppSettingsDialog implements Parcelable, Policy.PolicyClick {
     }
 
     @Override
-    public void policyCancelClick() {
+    public void policyCancelClick(int reqeustCode) {
 
     }
 
