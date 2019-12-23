@@ -1,5 +1,5 @@
-# PolicyLibDemo
-PolicyLibDemo
+# PolicyLib
+PolicyLib
 
 权限申请和隐私政策弹窗提示库：
 
