@@ -10,6 +10,8 @@ PolicyLib
 
 具体用例可以在MainActivity里查看用法。支持Activity和Fragment。
 
+可以直接使用提供的policylib-release.aar，AndroidX版本请使用：policylib-X-release.aar。
+
 体验APK：
 [点击下载](https://github.com/jaychou2012/PolicyLibDemo/blob/master/app-debug.apk?raw=true)
 
