@@ -1,4 +1,4 @@
-package com.google.policylibdemo;
+package com.db.policylib;
 
 import android.content.Context;
 
@@ -22,6 +22,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
 
-        assertEquals("com.google.policylibdemo", appContext.getPackageName());
+        assertEquals("com.db.policylib.test", appContext.getPackageName());
     }
 }

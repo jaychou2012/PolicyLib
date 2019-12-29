@@ -1,4 +1,4 @@
-package com.google.policylibdemo;
+package com.db.policylibdemo;
 
 import org.junit.Test;
 

@@ -1,7 +1,8 @@
 package pub.devrel.easypermissions;
 
 import android.app.Activity;
-import android.support.v4.app.Fragment;
+
+import androidx.fragment.app.Fragment;
 
 import java.util.Arrays;
 
