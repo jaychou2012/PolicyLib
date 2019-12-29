@@ -29,6 +29,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import pub.devrel.easypermissions.AppSettingsDialog;
+import pub.devrel.easypermissions.EasyPermissions;
 
 public class Policy {
 
@@ -68,7 +69,7 @@ public class Policy {
         }
         List<PermissionPolicy> listRequest = new ArrayList<>();
         for (int i = 0; i < list.size(); i++) {
-            if (!hasPermission(context, list.get(i).getPermission())) {
+            if (!EasyPermissions.hasPermissions(context, list.get(i).getPermission())) {
                 listRequest.add(list.get(i));
             }
         }
@@ -206,7 +207,7 @@ public class Policy {
         }
         List<PermissionPolicy> listRequest = new ArrayList<>();
         for (int i = 0; i < list.size(); i++) {
-            if (!hasPermission(context, list.get(i).getPermission())) {
+            if (!EasyPermissions.hasPermissions(context, list.get(i).getPermission())) {
                 listRequest.add(list.get(i));
             }
         }
@@ -218,7 +219,9 @@ public class Policy {
         }
         final ArrayList<String> stringLists = new ArrayList<>();
         for (int i = 0; i < list.size(); i++) {
-            stringLists.add(list.get(i).getPermission());
+            for (int j = 0; j < list.get(i).getPermission().length; j++) {
+                stringLists.add(list.get(i).getPermission()[j]);
+            }
         }
         if (!before) {
             PermissionSuit.with((Activity) context).setPermissions(stringLists).excute(new PermissionListener(context, list, requestTipsPermission));
@@ -270,7 +273,7 @@ public class Policy {
 
         @Override
         public void noPermision(ArrayList<String> permission) {
-            getRequestPermission(permission, list, new Policy.RequestPermission() {
+            getRequestPermission(permission, list, new RequestPermission() {
                 @Override
                 public void request(boolean showRequest) {
                     if (showRequest) {

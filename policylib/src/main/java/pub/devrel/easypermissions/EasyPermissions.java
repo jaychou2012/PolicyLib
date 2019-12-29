@@ -116,7 +116,7 @@ public class EasyPermissions {
         context = (Context) host;
         for (int i = 0; i < list.size(); i++) {
             PermissionPolicy policy = list.get(i);
-            if (Policy.getInstance().hasPermission(host, policy.getPermission())) {
+            if (EasyPermissions.hasPermissions(host, policy.getPermission())) {
                 list.remove(i);
                 perms[i].replace(perms[i], "");
             }
