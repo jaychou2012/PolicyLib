@@ -6,9 +6,11 @@ PolicyLib
 支持工信部规定的首次弹窗隐私政策和用户协议；
 支持申请权限前弹窗提示说明权限用途；
 支持申请权限时，用户点击拒绝并不再提示后再弹窗提示去系统手动授权；
-内置权限申请方法EasyPermission。
+内置权限申请库：EasyPermission。
 
 具体用例可以在MainActivity里查看用法。支持Activity和Fragment。
+
+可以直接使用提供的policylib-release.aar，AndroidX版本请使用：policylib-X-release.aar。
 
 体验APK：
 [点击下载](https://github.com/jaychou2012/PolicyLibDemo/blob/master/app-debug.apk?raw=true)
