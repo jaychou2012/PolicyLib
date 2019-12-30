@@ -6,7 +6,8 @@ PolicyLib
 支持工信部规定的首次弹窗隐私政策和用户协议；
 支持申请权限前弹窗提示说明权限用途；
 支持申请权限时，用户点击拒绝并不再提示后再弹窗提示去系统手动授权；
-内置权限申请库：EasyPermission。
+内置权限申请库：EasyPermission；
+支持升级更新功能：UpdateUtils。
 
 具体用例可以在MainActivity里查看用法。支持Activity和Fragment。
 
