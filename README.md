@@ -26,6 +26,9 @@ PolicyLib
 
 ![权限不再提示](https://github.com/jaychou2012/PolicyLibDemo/blob/master/Screenshot_20191221-185419_PolicyLibDemo.jpg?raw=true)
 
+![升级功能](https://github.com/jaychou2012/PolicyLibDemo/blob/master/Screenshot_20191230-201024_PolicyLibDemo.jpg?raw=true)
+
+
 
 
 
