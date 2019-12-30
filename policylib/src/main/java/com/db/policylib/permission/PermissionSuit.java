@@ -8,9 +8,10 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.Settings;
-import android.support.annotation.NonNull;
-import android.support.v4.content.ContextCompat;
 import android.util.SparseArray;
+
+import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -124,7 +125,7 @@ public class PermissionSuit {
                 }
                 return;
             }
-            PermissionFragment.newInstance(this, requestPermissions, requestCode).request(activity.getFragmentManager());
+            PermissionFragment.newInstance(this,requestPermissions, requestCode).request(activity.getFragmentManager());
         } else {
             if (listenerSparseArray.get(requestCode) != null) {
                 listenerSparseArray.get(requestCode).getAllPermission(requestPermissions);

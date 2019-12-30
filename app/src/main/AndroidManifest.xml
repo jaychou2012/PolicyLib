@@ -10,12 +10,11 @@
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
 
     <application
-        android:name=".BaseApplication"
         android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:networkSecurityConfig="@xml/net_config"
         android:roundIcon="@mipmap/ic_launcher_round"
+        android:networkSecurityConfig="@xml/net_config"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
@@ -34,20 +33,20 @@
             android:name=".RuleActivity"
             android:theme="@style/AppNoTitleTheme" />
 
-<!--        <receiver android:name="com.db.policylib.receiver.DownLoadReceiver">-->
-<!--            <intent-filter>-->
-<!--                <action android:name="android.intent.action.DOWNLOAD_COMPLETE" />-->
-<!--            </intent-filter>-->
-<!--        </receiver>-->
-<!--        <provider-->
-<!--            android:name="android.support.v4.content.FileProvider"-->
-<!--            android:authorities="${applicationId}.fileProvider"-->
-<!--            android:exported="false"-->
-<!--            android:grantUriPermissions="true">-->
-<!--            <meta-data-->
-<!--                android:name="android.support.FILE_PROVIDER_PATHS"-->
-<!--                android:resource="@xml/file_paths" />-->
-<!--        </provider>-->
+        <!--        <receiver android:name="com.db.policylib.receiver.DownLoadReceiver">-->
+        <!--            <intent-filter>-->
+        <!--                <action android:name="android.intent.action.DOWNLOAD_COMPLETE" />-->
+        <!--            </intent-filter>-->
+        <!--        </receiver>-->
+        <!--        <provider-->
+        <!--            android:name="android.support.v4.content.FileProvider"-->
+        <!--            android:authorities="${applicationId}.fileProvider"-->
+        <!--            android:exported="false"-->
+        <!--            android:grantUriPermissions="true">-->
+        <!--            <meta-data-->
+        <!--                android:name="android.support.FILE_PROVIDER_PATHS"-->
+        <!--                android:resource="@xml/file_paths" />-->
+        <!--        </provider>-->
     </application>
 
 </manifest>

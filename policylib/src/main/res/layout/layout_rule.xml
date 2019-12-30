@@ -27,8 +27,8 @@
             android:id="@+id/tv_text"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1"
             android:lineSpacingMultiplier="1.2"
+            android:layout_weight="1"
             android:paddingLeft="10dp"
             android:paddingTop="20dp"
             android:paddingRight="10dp"
@@ -43,7 +43,6 @@
             android:background="@color/line" />
 
         <LinearLayout
-            android:id="@+id/ll_bottom"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:orientation="horizontal">
@@ -79,17 +78,5 @@
                 android:textColor="#3b81f1"
                 android:textSize="15sp" />
         </LinearLayout>
-
-        <TextView
-            android:id="@+id/tv_update"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/btn_selector"
-            android:gravity="center"
-            android:padding="10dp"
-            android:text="升级"
-            android:textColor="#2994D7"
-            android:textSize="18sp"
-            android:visibility="gone" />
     </LinearLayout>
 </FrameLayout>
