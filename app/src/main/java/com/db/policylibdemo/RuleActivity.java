@@ -5,6 +5,8 @@ import android.media.MediaPlayer;
 import android.net.http.SslError;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.webkit.SslErrorHandler;
 import android.webkit.WebChromeClient;
@@ -14,9 +16,6 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Toast;
-
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 
 public class RuleActivity extends AppCompatActivity {
     private Toolbar toolBar;

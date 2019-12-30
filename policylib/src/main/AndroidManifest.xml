@@ -1,10 +1,32 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.db.policylib" >
-    <application>
+    package="com.db.policylib">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
+
+    <application
+        android:allowBackup="false"
+        android:networkSecurityConfig="@xml/net_config">
         <activity
             android:name="pub.devrel.easypermissions.AppSettingsDialogHolderActivity"
             android:exported="false"
             android:label=""
             android:theme="@style/EasyPermissions.Transparent" />
+        <receiver android:name=".receiver.DownLoadReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.DOWNLOAD_COMPLETE" />
+            </intent-filter>
+        </receiver>
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="${applicationId}.fileProvider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
     </application>
 </manifest>

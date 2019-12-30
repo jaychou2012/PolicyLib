@@ -14,7 +14,7 @@
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
             android:padding="10dp"
-            android:text="用户协议和隐私政策概要"
+            android:text="发现新版本"
             android:textColor="#212121"
             android:textSize="16sp" />
 
@@ -35,7 +35,7 @@
             android:paddingBottom="20dp"
             android:text=""
             android:textColor="#56595e"
-            android:textSize="14sp" />
+            android:textSize="15sp" />
 
         <View
             android:layout_width="match_parent"
@@ -57,7 +57,7 @@
                 android:background="@drawable/btn_rule_selector"
                 android:gravity="center"
                 android:padding="10dp"
-                android:text="暂不使用"
+                android:text="暂不升级"
                 android:textColor="#212121"
                 android:textSize="15sp" />
 
@@ -75,7 +75,7 @@
                 android:background="@drawable/btn_rule_right_selector"
                 android:gravity="center"
                 android:padding="10dp"
-                android:text="同意并继续"
+                android:text="升级"
                 android:textColor="#3b81f1"
                 android:textSize="15sp" />
         </LinearLayout>

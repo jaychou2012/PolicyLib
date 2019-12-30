@@ -1,10 +1,9 @@
 package pub.devrel.easypermissions.helper;
 
 import android.content.Context;
-
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
+import android.support.annotation.NonNull;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 
 /**
  * Permissions helper for {@link Fragment} from the support library.

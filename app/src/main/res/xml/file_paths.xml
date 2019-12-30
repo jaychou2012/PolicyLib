@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <paths>
+        <external-path
+            name="Android"
+            path="" />
+        <external-path
+            name="."
+            path="" />
+        <files-path
+            name="."
+            path="." />
+    </paths>
+</resources>

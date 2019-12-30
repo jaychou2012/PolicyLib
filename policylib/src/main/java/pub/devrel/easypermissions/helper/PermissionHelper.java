@@ -3,11 +3,10 @@ package pub.devrel.easypermissions.helper;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Build;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.StyleRes;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
+import android.support.annotation.NonNull;
+import android.support.annotation.StyleRes;
+import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 
 import com.db.policylib.PermissionPolicy;
 import com.db.policylib.Policy;

@@ -3,8 +3,7 @@ package pub.devrel.easypermissions;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.DialogInterface;
-
-import androidx.fragment.app.Fragment;
+import android.support.v4.app.Fragment;
 
 import java.util.Arrays;
 

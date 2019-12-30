@@ -8,9 +8,8 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
-
-import androidx.annotation.RestrictTo;
-import androidx.appcompat.app.AppCompatActivity;
+import android.support.annotation.RestrictTo;
+import android.support.v7.app.AppCompatActivity;
 
 @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
 public class AppSettingsDialogHolderActivity extends AppCompatActivity implements DialogInterface.OnClickListener {

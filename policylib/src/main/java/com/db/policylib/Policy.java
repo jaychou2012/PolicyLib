@@ -9,6 +9,11 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.Settings;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.method.LinkMovementMethod;
@@ -17,12 +22,6 @@ import android.text.style.ForegroundColorSpan;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
-import androidx.annotation.NonNull;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.db.policylib.permission.PermissionSuit;
 
@@ -274,7 +273,7 @@ public class Policy {
 
         @Override
         public void noPermision(ArrayList<String> permission) {
-            getRequestPermission(permission, list, new RequestPermission() {
+            getRequestPermission(permission, list, new Policy.RequestPermission() {
                 @Override
                 public void request(boolean showRequest) {
                     if (showRequest) {

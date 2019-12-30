@@ -1,11 +1,10 @@
 package pub.devrel.easypermissions.helper;
 
 import android.content.Context;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.fragment.app.FragmentManager;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.FragmentManager;
+import android.support.v7.app.AppCompatActivity;
 
 /**
  * Permissions helper for {@link AppCompatActivity}.
